@@ -6,6 +6,7 @@ import { Label } from '../components/ui/label';
 import { Compass, MapPin, Heart } from 'lucide-react';
 import { usePersonality } from '@/contexts/PersonalityContext';
 
+// Component for personality-based travel recommendation quiz
 interface PersonalityRecommenderProps {
   onComplete: (answers: Record<string, string>) => void;
   onProgressChange?: (current: number, total: number) => void;

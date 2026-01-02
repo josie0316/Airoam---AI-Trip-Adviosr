@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
+// Theme provider for managing application theme (dark/light/system)
 type Theme = "dark" | "light" | "system"
 
 type ThemeProviderProps = {
@@ -20,6 +21,7 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
+// Theme provider component for managing theme state
 export function ThemeProvider({
   children,
   defaultTheme = "system",
@@ -30,6 +32,7 @@ export function ThemeProvider({
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   )
 
+  // Apply theme class to document root element
   useEffect(() => {
     const root = window.document.documentElement
 

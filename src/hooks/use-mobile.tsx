@@ -1,7 +1,9 @@
 import * as React from "react"
 
+// Mobile breakpoint for responsive design detection
 const MOBILE_BREAKPOINT = 768
 
+// Hook to detect if the current viewport is mobile-sized
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
 

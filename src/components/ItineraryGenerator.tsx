@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import TravelMap from '@/components/TravelMap';
 
+// Component for generating and managing travel itineraries with drag-and-drop functionality
 interface Landmark {
   id: string;
   name: string;

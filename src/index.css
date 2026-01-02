@@ -1,9 +1,11 @@
+/* Import Google Fonts for typography */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base layer: CSS custom properties for theming */
 @layer base {
   :root {
     --background: 210 40% 98%;
@@ -46,6 +48,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  /* Dark theme color variables */
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -104,6 +107,7 @@
   }
 }
 
+/* Map container styling */
 .map-container {
   width: 100%;
   height: 100%;

@@ -5,9 +5,11 @@ import type {
   ToastProps,
 } from "@/components/ui/toast"
 
+// Toast notification configuration
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
 
+// Extended toast type with additional properties
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
