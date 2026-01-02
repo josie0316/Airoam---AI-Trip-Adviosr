@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import OpenAI from 'openai';
 
+// Router for AI-powered travel recommendations
 const router = Router();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// 定义活动类型和对应的兴趣选项
+// Activity types and their corresponding interest options
 const activityInterests = {
   'theaters and performing arts': {
     interests: [
@@ -148,12 +149,13 @@ const activityInterests = {
   }
 };
 
+// Main route handler for AI recommendations
 router.post('/', async (req, res) => {
   try {
     const { query, type, currentActivity, currentInterests } = req.body;
 
+    // Identify activity type from user query
     if (type === 'activity_identification') {
-      // 识别活动类型
       const completion = await openai.chat.completions.create({
         messages: [
           {
@@ -191,8 +193,8 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Invalid response format from AI' });
       }
     } 
+    // Refine user interests based on selected activity
     else if (type === 'interest_refinement') {
-      // 细化兴趣
       const completion = await openai.chat.completions.create({
         messages: [
           {
@@ -243,8 +245,8 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Invalid response format from AI' });
       }
     }
+    // Generate structured country recommendations
     else if (type === 'country_recommendation') {
-      // 生成结构化的推荐摘要
       const completion = await openai.chat.completions.create({
         messages: [
           {

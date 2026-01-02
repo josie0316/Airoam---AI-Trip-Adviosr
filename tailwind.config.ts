@@ -1,8 +1,10 @@
 
 import type { Config } from "tailwindcss";
 
+// Tailwind CSS configuration for styling
 export default {
 	darkMode: ["class"],
+	// Content paths for Tailwind to scan for class names
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -18,7 +20,9 @@ export default {
 				'2xl': '1400px'
 			}
 		},
-		extend: {
+			// Extended theme configuration
+			extend: {
+			// Custom color palette for the application
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -53,6 +57,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Custom travel-themed color scheme
 				travel: {
 					blue: '#1A6EB4',
 					teal: '#178582',
