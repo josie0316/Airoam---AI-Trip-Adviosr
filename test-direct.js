@@ -1,6 +1,7 @@
+// Direct API testing script (not recommended for production)
 import axios from 'axios';
 
-// 直接使用API key，不通过环境变量
+// Note: API key should be moved to environment variables in production
 const API_KEY = 'AIzaSyCx5Ddmau2zkG9eGKNtyremtkAvPBKVi2I';
 const BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 

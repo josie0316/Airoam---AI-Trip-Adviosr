@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from '../components/ui/radio-group';
 import { Label } from '../components/ui/label';
 import { Compass, MapPin, Heart } from 'lucide-react';
 
+// Alternative personality recommender component variant
 interface PersonalityRecommenderProps {
   onComplete: (answers: Record<string, string>) => void;
 }

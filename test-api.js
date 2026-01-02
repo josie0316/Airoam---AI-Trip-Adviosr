@@ -1,3 +1,4 @@
+// API testing script for Google Places API
 import axios from 'axios';
 import dotenv from 'dotenv';
 
@@ -6,6 +7,7 @@ dotenv.config();
 const API_KEY = process.env.VITE_GOOGLE_PLACES_API_KEY;
 const BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 
+// Test Google Places API endpoint
 async function testApi() {
   try {
     const params = {

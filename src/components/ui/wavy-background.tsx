@@ -2,6 +2,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
+// Wavy background component for visual appeal
 interface WavyBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
