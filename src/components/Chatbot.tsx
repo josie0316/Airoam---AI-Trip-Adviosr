@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Chatbot component for AI-powered travel recommendations
 interface ChatbotProps {
   onClose: () => void;
   onRecommendCountries: (recommendation: { 
@@ -46,6 +47,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose, onRecommendCountries }) => {
   const [currentInterests, setCurrentInterests] = useState<string[]>([]);
   const [lastAIResponse, setLastAIResponse] = useState<AIResponse | null>(null);
 
+  // Handle user message submission and AI response processing
   const handleSend = async () => {
     if (!input.trim()) return;
     const newMessages = [...messages, { role: 'user' as const, content: input }];
@@ -76,7 +78,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose, onRecommendCountries }) => {
         throw new Error(data.error);
       }
 
-      // Add AI response to chat
+      // Process and display AI response in chat interface
       if (typeof data.content === 'string') {
         setMessages([
           ...newMessages,

@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { cacheService } from './cacheService';
 
+// API configuration constants
 const GOOGLE_PLACES_API_KEY = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
-const SERVER_PORT = 3000;  // Changed to match server port
+const SERVER_PORT = 3000;  // Backend server port
 const PROXY_BASE_URL = `http://localhost:${SERVER_PORT}/api/places`;
 const API_BASE_URL = 'http://localhost:3001/api/places';
 
 console.log('Frontend API key check:', GOOGLE_PLACES_API_KEY ? 'API key is defined' : 'API key is missing');
 
-// Add ActivityType enum for better type safety
+// Activity types supported by the application
 export type ActivityType = 'historical' | 'nature' | 'entertainment' | 'dining';
 
 interface PlaceSearchParams {
@@ -118,8 +119,8 @@ export const searchPlaces = async (
       throw new Error('Invalid location provided');
     }
 
-    // Special handling for wine-related searches
-    const searchParams: any = {
+      // Enhanced search logic for wine-related activities
+      const searchParams: any = {
       location: `${location.lat},${location.lng}`,
       radius: radius,
       maxResults: 20 // Increase max results since we'll be filtering

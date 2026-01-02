@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Log environment variables
+// Initialize and verify environment configuration
 console.log('Environment variables:', {
   PORT: process.env.PORT,
   GOOGLE_PLACES_API_KEY: process.env.VITE_GOOGLE_PLACES_API_KEY || 'Not set'
@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS
+// Configure middleware
 app.use(cors());
 app.use(express.json());
 
@@ -33,7 +33,7 @@ if (!GOOGLE_PLACES_API_KEY) {
   process.exit(1);
 }
 
-// Google Places API proxy endpoint
+// Google Places API search proxy endpoint
 app.get('/api/places/search', async (req, res) => {
   try {
     const { location, type, radius, maxResults = 5 } = req.query;
@@ -54,7 +54,7 @@ app.get('/api/places/search', async (req, res) => {
       return res.status(400).json({ error: 'Location parameter is required' });
     }
 
-    // 根据活动类型设置搜索参数
+    // Configure search parameters based on activity type
     let searchType = 'point_of_interest';
     let searchKeyword = '';
 
@@ -123,7 +123,7 @@ app.get('/api/places/search', async (req, res) => {
       });
     }
 
-    // 获取每个地点的详细信息
+    // Fetch detailed information for each place
     const places = await Promise.all(
       response.data.results
         .slice(0, parseInt(maxResults) || 5) // 限制返回数量
@@ -326,7 +326,7 @@ Use the provided landmarks and their descriptions to fill in the specific detail
   }
 });
 
-// Helper function to extract country recommendations from AI response
+// Utility function to parse country recommendations from AI response
 function extractCountryRecommendations(response) {
   if (!response) {
     console.warn('Empty response received in extractCountryRecommendations');

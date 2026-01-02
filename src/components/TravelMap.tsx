@@ -2,6 +2,7 @@ import React from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import './TravelMap.css';
 
+// Interactive map component for displaying travel landmarks
 interface TravelMapProps {
   landmarks?: Array<{
     id: string;
@@ -29,6 +30,7 @@ const mapContainerStyle = {
   height: '100%'
 };
 
+// Default map center (London coordinates)
 const defaultCenter = {
   lat: 51.505,
   lng: -0.09
@@ -42,7 +44,7 @@ const TravelMap: React.FC<TravelMapProps> = ({
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
   const [bounds, setBounds] = React.useState<google.maps.LatLngBounds | null>(null);
 
-  // 当landmarks变化时，调整地图视图
+  // Adjust map bounds when landmarks change
   React.useEffect(() => {
     if (map && landmarks.length > 0) {
       const newBounds = new google.maps.LatLngBounds();
