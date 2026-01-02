@@ -21,6 +21,22 @@ interface Message {
   content: string;
 }
 
+interface Interest {
+  name: string;
+  description: string;
+}
+
+interface AIResponse {
+  content: {
+    activity?: string;
+    followUpQuestion?: string;
+    availableInterests?: Interest[];
+    interests?: string[];
+    recommendations?: any[];
+  } | string;
+  error?: string;
+}
+
 const Chatbot: React.FC<ChatbotProps> = ({ onClose, onRecommendCountries }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -28,6 +44,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose, onRecommendCountries }) => {
   const [conversationStage, setConversationStage] = useState<'initial' | 'activity' | 'interests'>('initial');
   const [currentActivity, setCurrentActivity] = useState<string>('');
   const [currentInterests, setCurrentInterests] = useState<string[]>([]);
+  const [lastAIResponse, setLastAIResponse] = useState<AIResponse | null>(null);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -52,48 +69,49 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose, onRecommendCountries }) => {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
 
-      const data = await res.json();
+      const data: AIResponse = await res.json();
+      setLastAIResponse(data);
       
       if (data.error) {
         throw new Error(data.error);
       }
 
       // Add AI response to chat
-      setMessages([
-        ...newMessages,
-        { role: 'ai' as const, content: data.summary }
-      ]);
+      if (typeof data.content === 'string') {
+        setMessages([
+          ...newMessages,
+          { role: 'ai' as const, content: data.content }
+        ]);
+      } else if (typeof data.content === 'object') {
+        // Handle JSON response
+        setMessages([
+          ...newMessages,
+          { role: 'ai' as const, content: data.content.followUpQuestion || 'What would you like to know more about?' }
+        ]);
 
-      // Process different stages of conversation
-      if (conversationStage === 'initial') {
-        if (data.activity) {
-          setCurrentActivity(data.activity);
-          setConversationStage('activity');
-          // Add a follow-up question about specific interests
-          setMessages(prev => [
-            ...prev,
-            { role: 'ai' as const, content: `Great! You're interested in ${data.activity}. What specific aspects of ${data.activity} interest you most? For example, are you more interested in classical performances, contemporary shows, or specific types of venues?` }
-          ]);
+        // Process different stages of conversation
+        if (conversationStage === 'initial') {
+          if (data.content.activity) {
+            setCurrentActivity(data.content.activity);
+            setConversationStage('activity');
+          }
+        } else if (conversationStage === 'activity') {
+          if (data.content.interests) {
+            setCurrentInterests(data.content.interests);
+            setConversationStage('interests');
+          }
+        } else if (conversationStage === 'interests') {
+          if (data.content.recommendations) {
+            onRecommendCountries({
+              activity: currentActivity,
+              interests: data.content.recommendations
+            });
+            setInput('');
+            return;
+          }
         }
-      } else if (conversationStage === 'activity') {
-        if (data.interests) {
-          setCurrentInterests(data.interests);
-          setConversationStage('interests');
-          // Add a follow-up question about preferences
-          setMessages(prev => [
-            ...prev,
-            { role: 'ai' as const, content: `I see you're interested in ${data.interests.join(', ')}. Do you have any specific preferences for the type of experience you're looking for? For example, are you interested in historical venues, modern theaters, or specific types of performances?` }
-          ]);
-        }
-      } else if (conversationStage === 'interests') {
-        if (data.recommendations) {
-          onRecommendCountries({
-            activity: currentActivity,
-            interests: data.recommendations
-          });
-          setInput('');
-          return;
-        }
+      } else {
+        throw new Error('Invalid response format from server');
       }
       
       setInput('');
@@ -134,13 +152,27 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose, onRecommendCountries }) => {
                 padding: '6px 12px',
                 maxWidth: 260,
                 fontSize: 14
-              }}>{msg.content}</span>
+              }}>
+                {msg.content}
+                {msg.role === 'ai' && idx === messages.length - 1 && lastAIResponse?.content && typeof lastAIResponse.content === 'object' && lastAIResponse.content.availableInterests && (
+                  <div style={{ marginTop: 8 }}>
+                    {lastAIResponse.content.availableInterests.map((interest: Interest, i: number) => (
+                      <div key={i} style={{ marginTop: 4, fontSize: 13 }}>
+                        <span style={{ fontWeight: 500 }}>• {interest.name}</span>
+                        <span style={{ color: '#666', marginLeft: 4 }}>{interest.description}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </span>
             </div>
           ))}
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <input
             type="text"
+            id="chatbot-input"
+            name="chatbot-input"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') handleSend(); }}
