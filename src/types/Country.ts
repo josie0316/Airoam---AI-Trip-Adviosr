@@ -1,5 +1,6 @@
 import { Location } from './Landmark';
 
+// European country data structure
 export interface EuropeanCountry {
   id: string;
   name: string;

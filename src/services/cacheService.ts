@@ -1,12 +1,14 @@
+// Cache item interface for storing data with expiration
 interface CacheItem {
   data: any;
   timestamp: number;
 }
 
+// Singleton service for managing application cache
 class CacheService {
   private static instance: CacheService;
   private cache: Map<string, CacheItem>;
-  private readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+  private readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
   private constructor() {
     this.cache = new Map();
@@ -26,11 +28,12 @@ class CacheService {
     });
   }
 
+  // Retrieve cached data if valid and not expired
   public get(key: string): any | null {
     const item = this.cache.get(key);
     if (!item) return null;
 
-    // Check if cache is expired
+    // Check if cache entry has expired
     if (Date.now() - item.timestamp > this.CACHE_DURATION) {
       this.cache.delete(key);
       return null;

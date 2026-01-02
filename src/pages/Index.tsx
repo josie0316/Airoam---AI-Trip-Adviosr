@@ -8,10 +8,12 @@ import { WavyBackground } from "@/components/ui/wavy-background";
 import PersonalityRecommender from "@/components/PersonalityRecommender";
 import { LandmarksProvider } from '@/contexts/LandmarksContext';
 
+// Main page component for travel planning application
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [personalityAnswers, setPersonalityAnswers] = useState<Record<string, string> | null>(null);
 
+  // Handle personality quiz completion
   const handlePersonalityComplete = (answers: Record<string, string>) => {
     setPersonalityAnswers(answers);
     setActiveTab("activity");

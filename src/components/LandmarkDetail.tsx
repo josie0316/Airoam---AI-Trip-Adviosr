@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, Euro, Star, Clock, MapPin, ArrowLeft } from 'lucide-react';
 
+// Component for displaying detailed landmark information
 const getRandomImage = (name: string) => {
   // In a real app, we would use actual images
   const images = [
@@ -17,6 +18,7 @@ const getRandomImage = (name: string) => {
   return images[index];
 };
 
+// Convert price level symbol to readable label
 const getPriceLabel = (price: string) => {
   switch (price) {
     case '€':

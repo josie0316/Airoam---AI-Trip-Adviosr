@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+// Context for managing user personality profile data
 interface PersonalityType {
   type: string;
   code: string;

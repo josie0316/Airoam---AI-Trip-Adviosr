@@ -11,11 +11,13 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+// AI response interface for trip report generation
 interface AIResponse {
   content: string;
   error?: string;
 }
 
+// Component for generating and managing travel itineraries
 const ItineraryGenerator: React.FC = () => {
   const { selectedLandmarks, removeLandmark } = useLandmarks();
   const { personality } = usePersonality();
@@ -24,11 +26,12 @@ const ItineraryGenerator: React.FC = () => {
   const [tripReport, setTripReport] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // 当 selectedLandmarks 变化时更新 sortedLandmarks
+  // Update sorted landmarks when selected landmarks change
   useEffect(() => {
     setSortedLandmarks(selectedLandmarks);
   }, [selectedLandmarks]);
 
+  // Calculate total trip days based on landmarks and travel logistics
   const calculateTotalDays = () => {
     // 计算基础天数
     const baseDays = Math.ceil(sortedLandmarks.reduce((total, landmark) => total + (landmark.estimatedDays || 1), 0));

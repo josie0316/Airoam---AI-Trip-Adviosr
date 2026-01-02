@@ -1,3 +1,4 @@
+// Landmark interface representing a travel destination or point of interest
 export interface Landmark {
   id: string;
   name: string;

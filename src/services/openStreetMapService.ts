@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { cacheService } from './cacheService';
 
+// OpenStreetMap Nominatim API base URL for place searches
 const NOMINATIM_BASE_URL = 'https://nominatim.openstreetmap.org/search';
 
 interface OpenStreetMapSearchParams {
@@ -26,12 +27,13 @@ interface OpenStreetMapPlace {
   icon?: string;
 }
 
+// Search for places using OpenStreetMap Nominatim API
 export const searchPlaces = async (params: OpenStreetMapSearchParams): Promise<OpenStreetMapPlace[]> => {
   try {
-    // Generate cache key from search parameters
+    // Generate cache key from search parameters for optimization
     const cacheKey = `osm-${params.q}-${params.countrycodes || 'all'}`;
     
-    // Check cache first
+    // Check cache first to avoid unnecessary API calls
     const cachedData = await cacheService.get(cacheKey);
     if (cachedData) {
       return cachedData as OpenStreetMapPlace[];

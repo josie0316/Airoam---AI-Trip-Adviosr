@@ -10,6 +10,7 @@ import AppRoutes from '@/routes';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
+// Initialize React Query client for data fetching
 const queryClient = new QueryClient();
 
 const App = () => (
